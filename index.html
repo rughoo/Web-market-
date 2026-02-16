@@ -1,1 +1,65 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB$MARKET Official</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding-bottom: 80px; background: #f4f4f4; }
+        .banner { width: 100%; padding: 15px 0; text-align: center; font-weight: bold; color: white; cursor: pointer; border: none; display: block; margin-top: 2px; text-decoration: none; }
+        .enseigne-bar { background: #ff6600; } 
+        .ads-bar { background: #0055ff; }      
+        .main-red-bar { background: #e60000; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 20px; } 
+        .ride-bar { background: #28a745; }      
+        .brand-bar { background: #ffcc00; color: black; } 
+        .gold-fixed-bar { background: linear-gradient(90deg, #ffd700, #daa520); color: black; position: fixed; bottom: 0; left: 0; z-index: 1000; }
+        .gold-dollar { color: #ffd700; font-weight: 900; text-shadow: 1px 1px 2px #000; }
+        .grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #fff; height: 320px; overflow-y: auto; }
+        .grid-2x2 img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; }
+        .modal { display: none; position: fixed; top: 10%; left: 5%; width: 90%; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0,0,0,0.5); z-index: 2000; border: 3px solid #ffd700; box-sizing: border-box; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .btn-pay { background: #6772e5; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-close { background: #333; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="banner enseigne-bar" onclick="ouvrir('Options Enseignes')">🏢 NOS ENSEIGNES (STORE PRO)</div>
+    <div class="banner ads-bar" onclick="ouvrir('Annonces ($1.50)')">📢 IMAGES ET ANNONCES ($1.50)</div>
+    <div class="banner main-red-bar">
+        <span>🚩</span> <span class="gold-dollar">$</span> <span>WEB$MARKET</span> <span>🛒</span>
+        <span onclick="ouvrir('Mon Compte')" style="cursor:pointer; font-size: 12px; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">COMPTE</span>
+    </div>
+    <div class="grid-2x2" id="scroller">
+        <img src="https://via.placeholder.com/200?text=Pub+1" onclick="ouvrir('Détail Produit')">
+        <img src="https://via.placeholder.com/200?text=Pub+2" onclick="ouvrir('Détail Produit')">
+        <img src="https://via.placeholder.com/200?text=Pub+3" onclick="ouvrir('Détail Produit')">
+        <img src="https://via.placeholder.com/200?text=Pub+4" onclick="ouvrir('Détail Produit')">
+    </div>
+    <div class="banner ride-bar" onclick="ouvrir('Covoiturage ($2.00)')">🚗 COVOITURAGE (DEMANDE / TRAJET)</div>
+    <div class="banner brand-bar" onclick="ouvrir('Marques Auto/Moto')">✈️ MARQUES : AUTO, MOTO, BATEAU, AVION</div>
+    <div id="fenetre" class="modal">
+        <h2 id="titre">Options</h2>
+        <input type="text" placeholder="Détails...">
+        <select onchange="calculer(this.value)">
+            <option value="1.50">Annonce Standard - $1.50</option>
+            <option value="2.00">Covoiturage - $2.00</option>
+            <option value="3.00">Boutique Enseigne - $3.00</option>
+        </select>
+        <p id="total" style="font-weight:bold;">Total (+10% commission site) : $1.65</p>
+        <button class="btn-pay">PAYER PAR STRIPE</button>
+        <button class="btn-close" onclick="document.getElementById('fenetre').style.display='none'">RETOUR</button>
+    </div>
+    <div class="banner gold-fixed-bar" onclick="ouvrir('Marketplace Or')">
+        <span class="gold-dollar">$</span> EN OR : MARKETPLACE & SERVICES
+    </div>
+    <script>
+        function ouvrir(t) { document.getElementById('titre').innerText = t; document.getElementById('fenetre').style.display = 'block'; }
+        function calculer(val) { 
+            let total = parseFloat(val) * 1.10;
+            document.getElementById('total').innerText = "Total (+10% commission site) : $" + total.toFixed(2); 
+        }
+        const s = document.getElementById('scroller');
+        setInterval(() => { s.scrollTop += 1; if (s.scrollTop >= s.scrollHeight - s.offsetHeight) s.scrollTop = 0; }, 50);
+    </script>
+</body>
+</html>
