@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB$MARKET OFFICIAL</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; margin: 0; padding-bottom: 70px; background: #f4f4f4; color: #333; }
+        
+        /* --- BANDEAUX --- */
+        .banner { width: 100%; padding: 15px 0; text-align: center; font-weight: bold; cursor: pointer; color: white; border: none; display: block; }
+        
+        /* 1. Rouge : Drapeau + $ Or + Nom + Caddy */
+        .red-bar { background: #e60000; display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 22px; }
+        .gold-extra { color: #ffd700; font-weight: 900; text-shadow: 1px 1px 2px #000; }
+        
+        /* 2. Bleu : Annonces */
+        .blue-bar { background: #0055ff; margin-top: 2px; }
+        
+        /* 3. Vert : Covoiturage */
+        .green-bar { background: #28a745; margin-top: 2px; }
+        
+        /* 4. Jaune : Marques */
+        .yellow-bar { background: #ffcc00; color: black; margin-top: 2px; }
+
+        /* 5. Or (Fixe en bas) */
+        .gold-bar { background: linear-gradient(90deg, #ffd700, #daa520); color: black; position: fixed; bottom: 0; left: 0; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+
+        /* --- ZONE SCROLL 2x2 --- */
+        .scroll-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; height: 320px; overflow-y: auto; background: #fff; }
+        .scroll-container img { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+
+        /* --- PANEL PROFIL & STRIPE --- */
+        .panel { background: white; margin: 15px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .price-info { color: #d9534f; font-size: 0.9em; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn-stripe { background: #6772e5; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 16px; }
+
+        /* --- MENU MARKETPLACE (CACHÉ) --- */
+        #market-menu { display: none; background: white; padding: 15px; border-radius: 15px 15px 0 0; position: fixed; bottom: 60px; left: 0; right: 0; z-index: 999; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); }
+        .grid-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .menu-btn { padding: 10px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 11px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="banner red-bar">
+        <span>🚩</span>
+        <span class="gold-extra">$</span>
+        <span>WEB$MARKET</span>
+        <span>🛒</span>
+        <select style="width: auto; margin: 0; padding: 2px; font-size: 12px;">
+            <option>FR 🇫🇷</option>
+            <option>EN 🇺🇸</option>
+        </select>
+    </div>
+
+    <div class="scroll-container" id="mainScroll">
+        <img src="https://via.placeholder.com/200?text=Hotel+Pro" alt="Store">
+        <img src="https://via.placeholder.com/200?text=Enchères" alt="Store">
+        <img src="https://via.placeholder.com/200?text=Bazar" alt="Store">
+        <img src="https://via.placeholder.com/200?text=Auto+Market" alt="Store">
+        </div>
+
+    <div class="banner blue-bar" onclick="alert('Ajouter Annonce & Image : $1.50')">
+        ANNONCES & IMAGES <span class="price-info">($1.50)</span>
+    </div>
+
+    <div class="banner green-bar" onclick="alert('Ouverture Page Chauffeur / Demande : $2.00')">
+        🚗 COVOITURAGE (Chauffeur / Trajet) <span class="price-info">($2.00)</span>
+    </div>
+
+    <div class="banner yellow-bar" onclick="alert('Menu Marques : 48h ($1.50) / Semaine ($3.00)')">
+        🏍️ MARQUES (AUTO, MOTO, BATEAU)
+    </div>
+
+    <div class="panel">
+        <h3>👤 MON PANEL VENDEUR</h3>
+        
+        <label>Nom de l'Enseigne <span class="price-info">($1.50 / semaine)</span></label>
+        <input type="text" placeholder="Tapez le nom de votre enseigne">
+
+        <label>Image de Store / Accueil <span class="price-info">($1.50 l'image)</span></label>
+        <input type="file">
+
+        <label>Forfait Visibilité</label>
+        <select id="selectForfait" onchange="calculerTotal()">
+            <option value="1.50">Menu 48 Heures - $1.50</option>
+            <option value="3.00">Menu 1 Semaine - $3.00</option>
+            <option value="10.00">Forfait Pro Illimité - $10.00</option>
+        </select>
+
+        <p id="totalDisplay">Total : $1.65 <small>(incluant 10% commission site)</small></p>
+        
+        <button class="btn-stripe">MON STRIPE (PAIEMENT)</button>
+    </div>
+
+    <div id="market-menu">
+        <div class="grid-menu">
+            <div class="menu-btn">HÔTEL</div>
+            <div class="menu-btn">ENCHÈRE</div>
+            <div class="menu-btn">BAZAR</div>
+            <div class="menu-btn">LOCATION</div>
+            <div class="menu-btn">BILLET</div>
+            <div class="menu-btn">SPORT</div>
+            <div class="menu-btn">BROCANTE</div>
+            <div class="menu-btn">ÉVÉNEMENT</div>
+            <div class="menu-btn">PRO</div>
+        </div>
+    </div>
+
+    <div class="banner gold-bar" onclick="toggleMarket()">
+        <span class="gold-extra">$</span> EN OR : MARKETPLACE & SERVICES PRO
+    </div>
+
+    <script>
+        // Calcul des 10% de commission
+        function calculerTotal() {
+            let prix = parseFloat(document.getElementById('selectForfait').value);
+            let commission = prix * 0.10;
+            let total = prix + commission;
+            document.getElementById('totalDisplay').innerHTML = "Total : $" + total.toFixed(2) + " <small>(incluant 10% commission site)</small>";
+        }
+
+        // Afficher/Cacher le menu Marketplace
+        function toggleMarket() {
+            let m = document.getElementById('market-menu');
+            m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // Scroll automatique lent pour la zone 2x2
+        const scrollZone = document.getElementById('mainScroll');
+        setInterval(() => {
+            scrollZone.scrollTop += 1;
+            if (scrollZone.scrollTop >= scrollZone.scrollHeight - scrollZone.offsetHeight) {
+                scrollZone.scrollTop = 0;
+            }
+        }, 50);
+    </script>
+</body>
+</html>
