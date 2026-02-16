@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB$MARKET Official</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding-bottom: 80px; background: #f4f4f4; }
+        .banner { width: 100%; padding: 15px 0; text-align: center; font-weight: bold; color: white; cursor: pointer; border: none; display: block; text-decoration: none; transition: 0.3s; }
+        .banner:active { opacity: 0.8; transform: scale(0.98); }
+        
+        /* 1ère : Enseignes (Orange) */
+        .enseigne-bar { background: #ff6600; font-size: 18px; }
+
+        /* 2ème : Images et Annonces (Bleu) */
+        .ads-bar { background: #0055ff; margin-top: 2px; }
+
+        /* 3ème : Drapeau $ WEB$MARKET Caddy Compte (Rouge) - NON CLIQUABLE POUR OPTIONS */
+        .main-red-bar { background: #e60000; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 20px; margin-top: 2px; cursor: default; }
+        .gold-dollar { color: #ffd700; font-weight: 900; text-shadow: 1px 1px 2px #000; }
+
+        /* Grille 2x2 Images */
+        .grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: #fff; height: 350px; overflow-y: auto; }
+        .grid-2x2 img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; }
+
+        /* 4ème : Covoiturage (Vert) */
+        .ride-bar { background: #28a745; margin-top: 2px; }
+
+        /* 5ème : Marques (Jaune) */
+        .brand-bar { background: #ffcc00; color: black; margin-top: 2px; }
+
+        /* Banderole OR (Fixe tout en bas) */
+        .gold-fixed-bar { background: linear-gradient(90deg, #ffd700, #daa520); color: black; position: fixed; bottom: 0; left: 0; z-index: 1000; font-weight: bold; }
+
+        /* Panel d'options caché par défaut */
+        .options-panel { display: none; background: white; margin: 10px; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #ddd; }
+        .price { color: #d9534f; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; }
+        .btn-close { background: #333; color: white; border: none; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="banner enseigne-bar" onclick="showOptions('Enseignes Pro')">
+        🏢 NOS ENSEIGNES (OUVRIR OPTIONS)
+    </div>
+
+    <div class="banner ads-bar" onclick="showOptions('Annonces & Pubs')">
+        📢 IMAGES ET ANNONCES ($1.50)
+    </div>
+
+    <div class="banner main-red-bar">
+        <span>🚩</span>
+        <span class="gold-dollar">$</span>
+        <span>WEB$MARKET</span>
+        <span>🛒</span>
+        <span onclick="alert('Accès Compte')" style="cursor:pointer; font-size: 14px; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px;">COMPTE</span>
+    </div>
+
+    <div class="grid-2x2" id="scrollArea">
+        <img src="https://via.placeholder.com/200?text=Image+1" onclick="showOptions('Détail Produit 1')">
+        <img src="https://via.placeholder.com/200?text=Image+2" onclick="showOptions('Détail Produit 2')">
+        <img src="https://via.placeholder.com/200?text=Image+3" onclick="showOptions('Détail Produit 3')">
+        <img src="https://via.placeholder.com/200?text=Image+4" onclick="showOptions('Détail Produit 4')">
+    </div>
+
+    <div class="banner ride-bar" onclick="showOptions('Covoiturage $2.00')">
+        🚗 COVOITURAGE (OUVRIR DEMANDE)
+    </div>
+
+    <div class="banner brand-bar" onclick="showOptions('Menu Marques')">
+        ✈️ MARQUES (AUTO, MOTO, BATEAU, AVION)
+    </div>
+
+    <div id="panelOptions" class="options-panel">
+        <h3 id="panelTitle">Options</h3>
+        <p>Configurer votre annonce ou store :</p>
+        <label>Nom / Enseigne</label>
+        <input type="text" placeholder="Entrez le texte...">
+        
+        <label>Forfait</label>
+        <select onchange="updateCalc(this.value)">
+            <option value="1.50">48 Heures - $1.50</option>
+            <option value="3.00">1 Semaine - $3.00</option>
+        </select>
+        
+        <p id="calcTotal">Total avec 10% commission : $1.65</p>
+        <button style="background:#6772e5; color:white; border:none; padding:12px; width:100%; border-radius:6px; font-weight:bold; cursor:pointer;">PAYER VIA STRIPE</button>
+        <button class="btn-close" onclick="closeOptions()">FERMER</button>
+    </div>
+
+    <div class="banner gold-fixed-bar" onclick="showOptions('Marketplace OR')">
+        <span class="gold-dollar" style="font-size:18px">$</span> EN OR : MARKETPLACE & SERVICES
+    </div>
+
+    <script>
+        function showOptions(title) {
+            document.getElementById('panelTitle').innerText = title;
+            document.getElementById('panelOptions').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('panelOptions').offsetTop, behavior: 'smooth' });
+        }
+
+        function closeOptions() {
+            document.getElementById('panelOptions').style.display = 'none';
+        }
+
+        function updateCalc(val) {
+            let prix = parseFloat(val);
+            let total = prix + (prix * 0.10);
+            document.getElementById('calcTotal').innerText = "Total avec 10% commission : $" + total.toFixed(2);
+        }
+
+        // Scroll automatique lent pour la grille
+        const scrollArea = document.getElementById('scrollArea');
+        setInterval(() => {
+            scrollArea.scrollTop += 1;
+            if (scrollArea.scrollTop >= scrollArea.scrollHeight - scrollArea.offsetHeight) {
+                scrollArea.scrollTop = 0;
+            }
+        }, 50);
+    </script>
+</body>
+</html>
